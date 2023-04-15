@@ -1,24 +1,28 @@
 import re
 
-def parse_mermaid_sequence_diagram(mermaid_code):
+def parse_mermaid_sequence_diagram(mermaid_code, default_participant_color="#FFFFFF"):
     participants_info = []
     messages_info = []
 
     lines = mermaid_code.strip().split('\n')
 
-    participant_pattern = re.compile(r'\s*participant\s+(\w+)(?:\s+as\s+)?(.+)?')
+    participant_pattern = re.compile(r'\s*participant\s+(\w+)(?:\s+as\s+)?(.+)?(?:\s*<<(\w+)>>)?')
     message_pattern = re.compile(r'\s*(\w+)-\>\>(\w+):\s*(.+)')
 
     participant_to_alias = {}
 
     for line in lines:
+        # Ignore comments
+        if line.strip().startswith("%%"):
+            continue
+
         participant_match = participant_pattern.match(line)
         message_match = message_pattern.match(line)
 
         if participant_match:
             participant_text = participant_match.group(1)
             participant_alias = participant_match.group(2) if participant_match.group(2) else participant_text
-            participant_color = ''
+            participant_color = participant_match.group(3) if participant_match.group(3) else default_participant_color
             participants_info.append({
                 'text': participant_alias.strip(),
                 'color': participant_color.strip(),

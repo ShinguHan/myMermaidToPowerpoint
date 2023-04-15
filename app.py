@@ -10,6 +10,9 @@ button_text_color = "#000000"
 
 def browse_file():
     file_path = filedialog.askopenfilename(filetypes=[("Text files", "*.md")])
+    if not file_path:
+        return  # User pressed cancel
+
     with open(file_path, "r") as f:
         mermaid_code = f.read()
         mermaid_code_text.delete(1.0, tk.END)
@@ -18,6 +21,10 @@ def browse_file():
 def save_presentation():
     mermaid_code = mermaid_code_text.get(1.0, tk.END)
     participants_info, messages_info = parse_mermaid_sequence_diagram(mermaid_code)
+
+    if not participants_info or not messages_info:
+        tk.messagebox.showerror("Error", "Failed to parse the Mermaid code. Please check the input.")
+        return
 
     save_path = filedialog.asksaveasfilename(defaultextension=".pptx", filetypes=[("PowerPoint files", "*.pptx")])
 
