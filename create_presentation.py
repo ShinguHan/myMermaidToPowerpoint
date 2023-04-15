@@ -18,7 +18,7 @@ def create_powerpoint_sequence_diagram(participants_info, messages_info, output_
         shape = slide.Shapes.AddShape(1, left, top, width, height)
         shape.TextFrame.TextRange.Text = participant_info["text"]
         shape.Line.Visible = False
-        shape.Fill.ForeColor.RGB = 0xFFFFFF
+        shape.Fill.ForeColor.RGB = 0x000000
         participant_shapes.append(shape)
 
         # Draw vertical line for each participant
@@ -39,7 +39,7 @@ def create_powerpoint_sequence_diagram(participants_info, messages_info, output_
         text_shape = slide.Shapes.AddShape(1, text_left, message_top, 100, 20)
         text_shape.TextFrame.TextRange.Text = message_info["text"]
         text_shape.Line.Visible = False
-        text_shape.Fill.ForeColor.RGB = 0xFFFFFF
+        text_shape.Fill.ForeColor.RGB = 0x000000
         text_shape.TextFrame.TextRange.Font.Size = 10
         text_shape.TextFrame.AutoSize = 1
 

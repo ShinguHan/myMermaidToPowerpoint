@@ -1,6 +1,3 @@
-import os
-import re
-import tempfile
 import tkinter as tk
 from tkinter import filedialog
 from parse_mermaid import parse_mermaid_sequence_diagram
