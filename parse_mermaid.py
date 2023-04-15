@@ -1,3 +1,4 @@
+# parse_mermaid.py
 import re
 
 def parse_mermaid_sequence_diagram(mermaid_code, default_participant_color="#FFFFFF"):
@@ -7,7 +8,7 @@ def parse_mermaid_sequence_diagram(mermaid_code, default_participant_color="#FFF
     lines = mermaid_code.strip().split('\n')
 
     participant_pattern = re.compile(r'\s*participant\s+(\w+)(?:\s+as\s+)?(.+)?(?:\s*<<(\w+)>>)?')
-    message_pattern = re.compile(r'\s*(\w+)-\>\>(\w+):\s*(.+)')
+    message_pattern = re.compile(r'\s*(\w+)(-+)>>(\w+):\s*(.+)')
 
     participant_to_alias = {}
 
@@ -30,18 +31,20 @@ def parse_mermaid_sequence_diagram(mermaid_code, default_participant_color="#FFF
             participant_to_alias[participant_text] = participant_alias.strip()
         elif message_match:
             from_participant = participant_to_alias.get(message_match.group(1), message_match.group(1))
-            to_participant = participant_to_alias.get(message_match.group(2), message_match.group(2))
+            to_participant = participant_to_alias.get(message_match.group(3), message_match.group(3))
             try:
                 from_index = participants_info.index(next(p for p in participants_info if p['text'] == from_participant))
                 to_index = participants_info.index(next(p for p in participants_info if p['text'] == to_participant))
             except ValueError:
-                print(f"Error: Participant not found in the sequence diagram for message: {message_match.group(3)}")
+                print(f"Error: Participant not found in the sequence diagram for message: {message_match.group(4)}")
                 continue
 
             messages_info.append({
                 'from': from_index,
                 'to': to_index,
-                'text': message_match.group(3),
+                'text': message_match.group(4),
+                'style': message_match.group(2),
             })
 
     return participants_info, messages_info
+

@@ -1,3 +1,6 @@
+
+
+# create_presentation.py
 import win32com.client
 
 def hex_to_rgb(value):
@@ -21,12 +24,15 @@ def create_powerpoint_sequence_diagram(participants_info, messages_info, output_
         # Add a new slide
         slide = presentation.Slides.Add(slide_num + 1, 12)  # 12 is the layout index for blank slides
 
+        # Calculate spacing based on the number of participants
+        participant_width = 100
+        participant_height = 50
+        total_width = width - (2 * left_start)
+        spacing = total_width / (len(participants_info) - 1)
+
         # Add participants
         left = left_start
         top = top_start
-        participant_width = 100
-        participant_height = 50
-        spacing = 150
         participant_shapes = []
         for participant_info in participants_info:
             shape = slide.Shapes.AddShape(1, left, top, participant_width, participant_height)
@@ -65,6 +71,8 @@ def create_powerpoint_sequence_diagram(participants_info, messages_info, output_
                                                    to_participant.Left + participant_width / 2, message_top + 10)
             horizontal_line.Line.ForeColor.RGB = 0x000000
             horizontal_line.Line.EndArrowheadStyle = 4  # 4 is the arrowhead style
+            if message_info["style"] == "--":
+                horizontal_line.Line.DashStyle = 2  # 2 is the dash style for dashed lines
 
             message_top += message_spacing
 
