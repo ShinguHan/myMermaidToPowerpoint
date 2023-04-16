@@ -20,7 +20,7 @@ def browse_file():
 
 def save_presentation():
     mermaid_code = mermaid_code_text.get(1.0, tk.END)
-    participants_info, messages_info, autonumber = parse_mermaid_sequence_diagram(mermaid_code)
+    participants_info, messages_info = parse_mermaid_sequence_diagram(mermaid_code)
 
     if not participants_info or not messages_info:
         tk.messagebox.showerror("Error", "Failed to parse the Mermaid code. Please check the input.")
@@ -29,7 +29,7 @@ def save_presentation():
     save_path = filedialog.asksaveasfilename(defaultextension=".pptx", filetypes=[("PowerPoint files", "*.pptx")])
 
     if save_path:
-        create_powerpoint_sequence_diagram(participants_info, messages_info, save_path, autonumber)
+        create_powerpoint_sequence_diagram(participants_info, messages_info, save_path)
 
 # Custom button class with rounded corners
 class RoundedButton(tk.Canvas):

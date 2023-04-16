@@ -9,10 +9,8 @@ def parse_mermaid_sequence_diagram(mermaid_code, default_participant_color="#FFF
 
     participant_pattern = re.compile(r'\s*participant\s+(\w+)(?:\s+as\s+)?(.+)?(?:\s*<<(\w+)>>)?')
     message_pattern = re.compile(r'\s*(\w+)(-+)>>(\w+):\s*(.+)')
-    autonumber_pattern = re.compile(r'\s*autonumber')
 
     participant_to_alias = {}
-    autonumber = False
 
     for line in lines:
         # Ignore comments
@@ -21,7 +19,6 @@ def parse_mermaid_sequence_diagram(mermaid_code, default_participant_color="#FFF
 
         participant_match = participant_pattern.match(line)
         message_match = message_pattern.match(line)
-        autonumber_match = autonumber_pattern.match(line)
 
         if participant_match:
             participant_text = participant_match.group(1)
@@ -48,7 +45,6 @@ def parse_mermaid_sequence_diagram(mermaid_code, default_participant_color="#FFF
                 'text': message_match.group(4),
                 'style': message_match.group(2),
             })
-        elif autonumber_match:
-            autonumber = True
 
-    return participants_info, messages_info, autonumber
+    return participants_info, messages_info
+
