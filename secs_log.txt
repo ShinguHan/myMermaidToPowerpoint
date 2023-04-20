@@ -1,0 +1,30 @@
+<SECS Message>
+<Message Type="S6F11">
+<Timestamp>2023-04-17 09:00:00.000</Timestamp>
+<Content>Event Report</Content>
+</SECS Message>
+<SECS Message>
+<Message Type="S6F12">
+<Timestamp>2023-04-17 09:00:00.100</Timestamp>
+<Content>Event Report Ack</Content>
+</SECS Message>
+<SECS Message>
+<Message Type="S1F1">
+<Timestamp>2023-04-17 09:01:00.000</Timestamp>
+<Content>Are You There Request</Content>
+</SECS Message>
+<SECS Message>
+<Message Type="S1F2">
+<Timestamp>2023-04-17 09:01:00.050</Timestamp>
+<Content>Are You There Response</Content>
+</SECS Message>
+<SECS Message>
+<Message Type="S6F11">
+<Timestamp>2023-04-17 10:00:00.000</Timestamp>
+<Content>Event Report</Content>
+</SECS Message>
+<SECS Message>
+<Message Type="S6F12">
+<Timestamp>2023-04-17 10:00:00.100</Timestamp>
+<Content>Event Report Ack</Content>
+</SECS Message>
