@@ -9,3 +9,12 @@
     A->>B: Hello Bob, how is Charly ?
     B->>C: Hello Charly, how are you?
 ```
+
+```mermaid
+stateDiagram
+    [*] --> First
+    state First {
+        [*] --> second
+        second --> [*]
+    }
+```

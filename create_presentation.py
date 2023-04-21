@@ -9,7 +9,7 @@ def hex_to_rgb(value):
 def rgb_to_int(rgb):
     return int(rgb[0]) | (int(rgb[1]) << 8) | (int(rgb[2]) << 16)
 
-def create_powerpoint_sequence_diagram(participants_info, messages_info, output_path, autonumber, left_start=100, top_start=100, width=800, height=600, messages_per_slide=20):
+def create_powerpoint_sequence_diagram(participants_info, messages_info, output_path, autonumber, left_start=100, top_start=100, width=800, height=600, messages_per_slide=5):
     # Create PowerPoint application and presentation
     PPTApp = win32com.client.Dispatch("PowerPoint.Application")
     PPTApp.Visible = True
@@ -60,7 +60,8 @@ def create_powerpoint_sequence_diagram(participants_info, messages_info, output_
 
             # Add message text
             text_left = from_participant.Left + (abs(from_participant.Left - to_participant.Left) / 2) - 50
-            text_shape = slide.Shapes.AddShape(1, text_left, message_top, 100, 20)
+            # text_shape = slide.Shapes.AddShape(1, text_left, message_top, 100, 20)
+            text_shape = slide.Shapes.AddShape(1, text_left, message_top - 20, 100, 20) # Change message_top to message_top - 20
             message_text = message_info["text"]
             if autonumber:
                 message_text = f"{message_number}. {message_text}"
