@@ -3,27 +3,45 @@ from tkinter import filedialog
 from pptx import Presentation
 import os
 
+def extract_text_from_shape(shape):
+    text = ""
+    if shape.has_text_frame:
+        for paragraph in shape.text_frame.paragraphs:
+            for run in paragraph.runs:
+                text += "%%" + run.text + "\n"
+    elif shape.has_table:
+        for row in shape.table.rows:
+            for cell in row.cells:
+                if cell.text_frame:
+                    for paragraph in cell.text_frame.paragraphs:
+                        for run in paragraph.runs:
+                            text += "%%" + run.text + "\n"
+    elif shape.has_chart:
+        for series in shape.chart.series:
+            text += "%%" + series.name + "\n"
+            for point in series.points:
+                text += "%%" + point.name + "\n"
+    elif shape.shape_type == 20: # Line shape type
+        text += "->>\n"
+    return text
+
+def extract_text_from_group(group_shape):
+    text = "[그룹시작]\n"
+    for shape in group_shape.shapes:
+        if shape.shape_type == 6: # Group shape type
+            text += extract_text_from_group(shape)
+        else:
+            text += extract_text_from_shape(shape)
+    return text
+
 def extract_text(slide):
     text = ""
     for shape in slide.shapes:
-        if shape.has_text_frame:
-            for paragraph in shape.text_frame.paragraphs:
-                for run in paragraph.runs:
-                    text += "%%" + run.text + "\n"
-        elif shape.has_table:
-            for row in shape.table.rows:
-                for cell in row.cells:
-                    if cell.text_frame:
-                        for paragraph in cell.text_frame.paragraphs:
-                            for run in paragraph.runs:
-                                text += "%%" + run.text + "\n"
-        elif shape.has_chart:
-            for series in shape.chart.series:
-                text += "%%" + series.name + "\n"
-                for point in series.points:
-                    text += "%%" + point.name + "\n"
+        if shape.shape_type == 6: # Group shape type
+            text += extract_text_from_group(shape)
+        else:
+            text += extract_text_from_shape(shape)
     return text
-
 
 def save_text_to_file(text, file_name):
     with open(file_name, "w", encoding="utf-8") as file:
